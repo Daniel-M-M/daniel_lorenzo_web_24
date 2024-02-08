@@ -1,4 +1,4 @@
-import mysql, { Connection } from "mysql2"
+import mysql, { Connection } from "mysql2/promise"
 
 let conn: Connection | null = null
 
