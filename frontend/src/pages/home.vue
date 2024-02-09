@@ -1,4 +1,5 @@
 <script lang="ts">
+
 import axios from "axios"
 import { PropType, defineComponent } from "vue"
 import BookForm from "../components/book-form.vue"
@@ -35,8 +36,9 @@ export default defineComponent({
     <button />
   </div>
   <div>
+
+    <h3>Chi siamo:</h3>
     <p>
-      Chi siamo:
       Siamo una Clinica per i casi più strani che esistono e siamo capace di trovare una soluzione per i vostro problemi.
       Contiamo con la capacità intuitiva del nostro fondatore il Dr. House... più bravo medico di tutti i tempi.
       Siamo lieti di accogliervi nel nostro centro, sarete sicuramente soddisfatti o rimborsati caso non troviamo
@@ -60,7 +62,7 @@ export default defineComponent({
     <h1>Le mie prenotazioni</h1>
     <div v-if="books.length > 0" class="divide-y divide-gray-100">
       <BookItem
-        v-for="book in books" v-if="book.idcode === user.idcode || book.iddoctor === user.idcode"
+        v-for="book in books"
         :key="book.idcode"
         :post="book"
         :canDelete="book.idcode == user?.idcode || user?.role == 'admin'"

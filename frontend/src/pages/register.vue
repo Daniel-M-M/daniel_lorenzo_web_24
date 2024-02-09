@@ -5,13 +5,10 @@ import { defineComponent } from "vue"
 export default defineComponent({
   data() {
     return {
-      idcode: "",
-      iddoctor: "",
-      username: "",
-      usersurname: "",
-      emailadress: "",
-      birthdate: "",
-      reparto: "",
+      id_user: "",
+      user_name: "",
+      user_surname: "",
+      email_address: "",
       password: "",
       confirmPassword: "",
     }
@@ -24,7 +21,7 @@ export default defineComponent({
       }
       try {
         await axios.post("/api/auth/register", {
-          idcode: this.idcode,
+          id_user: this.id_user,
           password: this.password,
         })
         window.location.href = "/"
@@ -46,45 +43,27 @@ export default defineComponent({
     <form class="not-prose flex flex-col gap-3" @submit.prevent="onSubmit">
       <input
         type="text"
-        v-model="idcode"
+        v-model="id_user"
         class="rounded-lg border-slate-200"
         placeholder="Codice Fiscale"
       />
       <input
-          type="number"
-          v-model="iddoctor"
+          type="text"
+          v-model="user_name"
           class="rounded-lg border-slate-200"
           placeholder="Codice Albo"
       />
       <input
           type="text"
-          v-model="username"
+          v-model="user_surname"
           class="rounded-lg border-slate-200"
           placeholder="Nome"
       />
       <input
-          type="text"
-          v-model="usersurname"
-          class="rounded-lg border-slate-200"
-          placeholder="Cognome"
-      />
-      <input
           type="email"
-          v-model="emailadress"
+          v-model="email_address"
           class="rounded-lg border-slate-200"
           placeholder="e-mail"
-      />
-      <input
-          type="date"
-          v-model="birthdate"
-          class="rounded-lg border-slate-200"
-          placeholder="Data nascita"
-      />
-      <input
-          type="text"
-          v-model="reparto"
-          class="rounded-lg border-slate-200"
-          placeholder="Reparto"
       />
       <input
         type="password"

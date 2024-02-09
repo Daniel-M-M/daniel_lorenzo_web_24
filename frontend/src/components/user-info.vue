@@ -17,7 +17,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <span class="text-sm">{{ user?.username }}</span>
+  <span class="text-sm">{{ user?.user_name }}</span>
   <div
     class="h-9 w-9 flex rounded-full"
     :class="{ 'bg-blue-500': user?.role != 'admin', 'bg-rose-500': user?.role == 'admin' }"
