@@ -48,12 +48,7 @@ export default defineComponent({
               name="Erogazione"
               v-model="id_prestazione"
               class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        <option selected="">Radiografia</option>
-        <option>Mammografia</option>
-        <option>Tomografia</option>
-        <option>Risonanza Magnetica</option>
-        <option>Cardiologia</option>
-        <option>Neurologia</option>
+        <option @select="prestazione.id">{{ prestazione.titolo }}</option>
       </select>
     </div>
     <div>
@@ -62,12 +57,7 @@ export default defineComponent({
               name="Dottore"
               v-model="id_doctor"
               class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        <option selected="">Dottore House</option>
-        <option>Dottoressa Cuddly</option>
-        <option>Dottore Wilson</option>
-        <option>Dottore Foreman</option>
-        <option>Dottore Chase</option>
-        <option>Dottoressa Cameron</option>
+        <option @select="dottore.id">{{ dottore.titolo }}</option>
       </select>
     </div>
     <div>
