@@ -72,3 +72,27 @@ export const getMyBooking = async (req: Request, res: Response) => {
     const [booking] = await conn.execute("SELECT booking.id as id, booking.id_user, doctors.doth_name, doctors.doth_surname, booking.data_prenotazione, booking.ora_prenotazione, booking.id_prenotazione FROM booking LEFT OUTER JOIN doctors ON booking.id_user=users.id_user WHERE id_user=? OR id_doctor=? ORDER BY booking.data_prenotazione, booking.ora_prenotazione DESC")
     res.json(booking)
 }
+
+export const getPrestazioni = async (req: Request, res: Response) => {
+
+    const conn = await getConnection();
+
+    const [prestazioni] = await conn.execute(
+        "SELECT * FROM prestazione"
+    );
+
+    res.json(prestazioni);
+
+}
+
+export const getDoctors = async (req: Request, res: Response) => {
+
+    const conn = await getConnection();
+
+    const [doctors] = await conn.execute(
+        "SELECT * FROM doctors"
+    );
+
+    res.json(doctors);
+
+}
