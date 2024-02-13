@@ -10,7 +10,7 @@ export const register = async (req: Request, res: Response) => {
         return
     }
 
-    const { id_user, user_name, user_surname, password, email_address } = req.body
+    const { id_user, user_name, user_surname, email_address, password } = req.body
 
     const connection = await getConnection()
     const [users] = await connection.execute("SELECT id_user FROM users WHERE id_user=?", [
@@ -56,7 +56,7 @@ export const login = async (req: Request, res: Response) => {
     const connection = await getConnection()
     const [results] = await connection.execute(
         "SELECT id_user, password FROM users WHERE id_user=?",
-        [id_user]
+        [id_user !== undefined ? id_user : null]
     )
 
     if (!Array.isArray(results) || results.length == 0) {

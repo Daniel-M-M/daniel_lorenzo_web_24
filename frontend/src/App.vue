@@ -1,26 +1,29 @@
 <script lang="ts">
-import axios from "axios"
-import { defineComponent } from "vue"
-import UserInfo from "./components/user-info.vue"
-import { User } from "./types"
 
-export default defineComponent({
-  components: { UserInfo },
-  data() {
-    return {
-      user: null as User | null,
-    }
-  },
-  methods: {
-    async getUser() {
-      const res = await axios.get("/api/auth/profile")
-      this.user = res.data
+  import axios from "axios"
+  import { defineComponent } from "vue"
+  import UserInfo from "./components/user-info.vue"
+  import PrestazionePrezzo from "./components/prestazione_item.vue"
+  import { User } from "./types"
+
+  export default defineComponent({
+    components: { UserInfo, PrestazionePrezzo },
+    data() {
+      return {
+        user: null as User | null,
+      }
     },
-  },
-  mounted() {
-    this.getUser()
-  },
-})
+    methods: {
+      async getUser() {
+        const res = await axios.get("/api/auth/profile")
+        this.user = res.data
+      },
+
+    },
+    mounted() {
+      this.getUser()
+    },
+  })
 </script>
 
 <template>
@@ -37,8 +40,9 @@ export default defineComponent({
   <main class="grow py-6 border-y border-slate-200 mx-6">
     <!-- Passa l'utente come prop a tutte le pagine del router -->
     <RouterView :user="user" />
+    <!-- QUi va anche la visione dei suoi booking se ci sono-->
   </main>
   <footer class="flex p-6">
-
+    <PrestazionePrezzo></PrestazionePrezzo>
   </footer>
 </template>

@@ -5,12 +5,12 @@ import { defineComponent } from "vue"
 export default defineComponent({
   data() {
     return {
-      id_user: "",
-      user_name: "",
-      user_surname: "",
-      email_address: "",
-      password: "",
-      confirmPassword: "",
+      id_user: "" as FormDataEntryValue,
+      user_name: "" as FormDataEntryValue,
+      user_surname: "" as FormDataEntryValue,
+      email_address: "" as FormDataEntryValue,
+      password: "" as FormDataEntryValue,
+      confirmPassword: "" as FormDataEntryValue,
     }
   },
   methods: {

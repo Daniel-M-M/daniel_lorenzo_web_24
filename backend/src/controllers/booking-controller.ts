@@ -35,7 +35,7 @@ export const checkBooking = async (req: Request, res: Response) => {
     const [bookings] = await conn.execute("SELECT data_prenotazione, ora_prenotazione FROM booking")
     let isBooked = false;
     for (const book of bookings as RowDataPacket[]) {
-        if (book.data_prenotazione === req.body.data_prenotazione &&
+        if (book.data_prenotazione.toISOString() === req.body.data_prenotazione.toISOString() &&
             book.ora_prenotazione === req.body.ora_prenotazione) {
             isBooked = true;
             break;

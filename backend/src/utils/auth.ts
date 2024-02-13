@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 
 // Campi da inserire nell'accesso token
 interface User {
-    id_user: number
+    id_user: string
     role: "admin" | "user"
 }
 
