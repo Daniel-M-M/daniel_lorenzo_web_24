@@ -33,10 +33,6 @@ export default defineComponent({
     <h1>Dr. House Clinic</h1>
   </div>
   <div>
-    <button />
-  </div>
-  <div>
-
     <h3>Chi siamo:</h3>
     <p>
       Siamo una Clinica per i casi più strani che esistono e siamo capace di trovare una soluzione per i vostro problemi.
@@ -46,26 +42,26 @@ export default defineComponent({
     </p>
   </div>
   <div>
-    <p>Le nostre principali specialità:</p>
+    <h3>Le nostre principali specialità:</h3>
     <ul>
       <li>Radiografia</li>
       <li>Mammografia</li>
       <li>Tomografia</li>
       <li>RMagnetica</li>
       <li>Cardiologia</li>
-      <li>Nerologia</li>
+      <li>Neurologia</li>
     </ul>
     <p>E molto ancora...</p>
   </div>
   <div class="prose">
     <BookForm v-if="user" @submit="getBooking" />
-    <h1>Le mie prenotazioni</h1>
+    <h3>Le mie prenotazioni</h3>
     <div v-if="books.length > 0" class="divide-y divide-gray-100">
       <BookItem
         v-for="book in books"
-        :key="book.idcode"
+        :key="book.id_prestazione"
         :post="book"
-        :canDelete="book.idcode == user?.idcode || user?.role == 'admin'"
+        :canDelete="book.id_user === user?.id_user || user?.role === 'admin'"
         @delete="getBooking"
         class="flex items-center justify-between gap-x-6 py-5"
       />

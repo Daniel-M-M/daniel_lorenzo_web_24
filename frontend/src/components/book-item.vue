@@ -24,9 +24,9 @@ export default defineComponent({
   <div>
         <div class="flex min-w-0 gap-x-4">
           <div class="min-w-0 flex-auto">
-            <p class="text-sm font-semibold leading-6 text-gray-900">{{ book?.content }}</p>
-            <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ book?.bookingdate }} • {{ book?.bookinghours }}</p>
-            <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ book?.bookingat }} • {{ book?.handicap }}</p>
+            <p class="text-sm font-semibold leading-6 text-gray-900">{{ book?.id_prestazione }}</p>
+            <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ book?.data_prenotazione }} • {{ book?.ora_prenotazione }}</p>
+            <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ book?.id_user }} • {{ book?.id_doctor }}</p>
           </div>
         </div>
         <button v-if="canDelete" @click="deleteBooking" class="btn rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Cancella</button>

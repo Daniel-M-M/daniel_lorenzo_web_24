@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { getConnection } from "../utils/db"
 import { decodeAccessToken } from "../utils/auth"
+import {RowDataPacket} from "mysql2";
 
 export const createBooking = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
@@ -31,13 +32,21 @@ export const checkBooking = async (req: Request, res: Response) => {
     }
 
     const conn = await getConnection()
-    const [verified] = await conn.execute("SELECT id_user, data_prenotazione, ora_prenotazione FROM booking")
-    if (req.body.data_prenotazione === verified.data_prenotazione && req.body.ora_prenotazione === verified.ora_prenotazione) {
-        res.json({ success: false }).send("Questo periodo è già stato prenotato")
+    const [bookings] = await conn.execute("SELECT data_prenotazione, ora_prenotazione FROM booking")
+    let isBooked = false;
+    for (const book of bookings as RowDataPacket[]) {
+        if (book.data_prenotazione === req.body.data_prenotazione &&
+            book.ora_prenotazione === req.body.ora_prenotazione) {
+            isBooked = true;
+            break;
+        }
     }
-    else {
-        await createBooking(req, res)
-        res.json({ success: true })
+
+    if (isBooked) {
+        res.json({ success: false, message: "Questo periodo è già stato prenotato" });
+    } else {
+        await createBooking(req, res);
+        res.json({ success: true, message: "Prenotazione effettuata con successo" });
     }
 }
 
@@ -68,8 +77,13 @@ export const deleteBooking = async (req: Request, res: Response) => {
 }
 
 export const getMyBooking = async (req: Request, res: Response) => {
+    const user = decodeAccessToken(req, res)
+    if (!user) {
+        res.status(403).send("Questa operazione richiede l'autenticazione.")
+        return
+    }
     const conn = await getConnection()
-    const [booking] = await conn.execute("SELECT booking.id as id, booking.id_user, doctors.doth_name, doctors.doth_surname, booking.data_prenotazione, booking.ora_prenotazione, booking.id_prenotazione FROM booking LEFT OUTER JOIN doctors ON booking.id_user=users.id_user WHERE id_user=? OR id_doctor=? ORDER BY booking.data_prenotazione, booking.ora_prenotazione DESC")
+    const [booking] = await conn.execute("SELECT booking.id_user, doctors.doth_name, doctors.doth_surname, booking.data_prenotazione, booking.ora_prenotazione, booking.id_prestazione FROM booking LEFT OUTER JOIN doctors ON booking.id_doctor=doctors.id_doctor WHERE id_user=? OR doctors.id_doctor=? ORDER BY booking.data_prenotazione, booking.ora_prenotazione DESC", [user.id_user, user.id_user])
     res.json(booking)
 }
 

@@ -2,8 +2,10 @@
 import axios from "axios"
 import { PropType, defineComponent } from "vue"
 import { User } from "../types"
+import BookForm from "./book-form.vue";
 
 export default defineComponent({
+  components: {BookForm},
   props: {
     user: Object as PropType<User>,
   },
@@ -20,7 +22,7 @@ export default defineComponent({
   <span class="text-sm">{{ user?.user_name }}</span>
   <div
     class="h-9 w-9 flex rounded-full"
-    :class="{ 'bg-blue-500': user?.role != 'admin', 'bg-rose-500': user?.role == 'admin' }"
+    :class="{ 'bg-blue-500': user?.role !== 'admin', 'bg-rose-500': user?.role === 'admin' }"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -45,4 +47,5 @@ export default defineComponent({
       />
     </svg>
   </button>
+  <book-form>Prenota Una Visita</book-form>
 </template>

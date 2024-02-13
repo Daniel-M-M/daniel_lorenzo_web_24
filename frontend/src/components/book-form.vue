@@ -48,7 +48,7 @@ export default defineComponent({
               name="Erogazione"
               v-model="id_prestazione"
               class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        <option @select="prestazione.id">{{ prestazione.titolo }}</option>
+        <!-- option @select="prestazione.id">{{ prestazione.titolo }}</option -->
       </select>
     </div>
     <div>
@@ -57,7 +57,7 @@ export default defineComponent({
               name="Dottore"
               v-model="id_doctor"
               class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        <option @select="dottore.id">{{ dottore.titolo }}</option>
+        <!-- option @select="dottore.id">{{ dottore.titolo }}</option -->
       </select>
     </div>
     <div>

@@ -37,7 +37,6 @@ export default defineComponent({
   <main class="grow py-6 border-y border-slate-200 mx-6">
     <!-- Passa l'utente come prop a tutte le pagine del router -->
     <RouterView :user="user" />
-    <RouterLink to="/" class="text-blue-500 font-bold m-auto">Prenota</RouterLink>
   </main>
   <footer class="flex p-6">
 

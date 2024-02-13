@@ -51,13 +51,13 @@ export default defineComponent({
           type="text"
           v-model="user_name"
           class="rounded-lg border-slate-200"
-          placeholder="Codice Albo"
+          placeholder="Nome"
       />
       <input
           type="text"
           v-model="user_surname"
           class="rounded-lg border-slate-200"
-          placeholder="Nome"
+          placeholder="Cognome"
       />
       <input
           type="email"

@@ -1,10 +1,9 @@
 import { Request, Response } from "express"
 import jwt from "jsonwebtoken"
 
-// Campi da inserire nell'access token
+// Campi da inserire nell'accesso token
 interface User {
     id_user: number
-    user_name: string
     role: "admin" | "user"
 }
 
@@ -13,11 +12,11 @@ const COOKIE_NAME = "access-token"
 
 
 export const setAccessToken = (req: Request, res: Response, user: any) => {
-    // Crea l'access token con JWT
+    // Crea l'accesso token con JWT
     const accessToken = jwt.sign(user, JWT_SECRET, { expiresIn: "1 day" })
-    // Imposta l'access token come cookie
+    // Imposta l'accesso token come cookie
     res.cookie(COOKIE_NAME, accessToken, {
-        maxAge: 86400000, // 1 giorno in millisecondi
+        maxAge: 86400000, // un giorno in millisecondi
         httpOnly: true,
         sameSite: true,
         // secure: true
@@ -25,7 +24,7 @@ export const setAccessToken = (req: Request, res: Response, user: any) => {
 }
 
 /**
- * Decodifica l'access token, ottenendo l'utente.
+ * Decodifica l'accesso token, ottenendo l'utente.
  * Usato per verificare se l'utente ha effettuato il login.
  */
 export const decodeAccessToken = (req: Request, res: Response) => {
@@ -34,15 +33,15 @@ export const decodeAccessToken = (req: Request, res: Response) => {
 
     if (!accessToken) return null
     try {
-        const user = jwt.verify(accessToken, JWT_SECRET) as User
-        return user
+        return jwt.verify(accessToken, JWT_SECRET) as User
+
     } catch {
         return null
     }
 }
 
 /**
- * Cancella il cookie contente l'access token.
+ * Cancella il cookie contente l'accesso token.
  * Usato per effettuare il logout.
  */
 export const deleteAccessToken = (req: Request, res: Response) => {
