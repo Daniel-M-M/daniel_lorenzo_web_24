@@ -44,6 +44,13 @@ export const register = async (req: Request, res: Response) => {
 }
 
 export const login = async (req: Request, res: Response) => {
+    if (req.body.id_user.isEmpty() || req.body.password.isEmpty()) {
+        return res.status(400).send("Codice Fiscale o Password is missing")
+    }
+
+    if (req.body.id_user.isValid() || req.body.password.is.isValid()) {
+        return res.status(400).send("Codice Fiscale o Password not valid")
+    }
 
     const user = decodeAccessToken(req, res)
     if (user) {
@@ -55,12 +62,12 @@ export const login = async (req: Request, res: Response) => {
 
     const connection = await getConnection()
     const [results] = await connection.execute(
-        "SELECT id_user, password FROM users WHERE id_user=?",
-        [id_user !== undefined ? id_user : null]
+        "SELECT id_user, password, role FROM users WHERE id_user=?",
+        [id_user]
     )
 
     if (!Array.isArray(results) || results.length == 0) {
-        res.status(400).send("Credenziali errate.")
+        res.status(400).send("Credenziali User errate.")
         return
     }
 
@@ -69,11 +76,11 @@ export const login = async (req: Request, res: Response) => {
     const passwordOk = await bcrypt.compare(password, userData.password)
 
     if (!passwordOk) {
-        res.status(400).send("Credenziali errate.")
+        res.status(400).send("Credenziali Pass errate.")
         return
     }
 
-    delete userData.password
+    //delete userData.password
 
     setAccessToken(req, res, userData)
 

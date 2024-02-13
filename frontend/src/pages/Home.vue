@@ -41,7 +41,7 @@
   <div>
     <h3>Le nostre principali specialità:</h3>
     <div class="prose">
-      <!-- BookForm v-if="user" @submit="getBooking" / -->
+
       <div v-if="services.length > 0" class="divide-y divide-gray-100">
         <PrestazioneItem
             v-for="service in services"
@@ -55,5 +55,6 @@
     </div>
     <p>E molto ancora...</p>
   </div>
-
+<!-- <book-form>Prenota Una Visita</book-form>
+      <BookForm v-if="user" @submit="getBooking" /> -->
 </template>

@@ -4,7 +4,7 @@
     <form class="not-prose flex flex-col gap-3" @submit.prevent="onSubmit">
       <input
           type="text"
-          v-model="idcode"
+          v-model="id_user"
           class="rounded-lg border-slate-200"
           placeholder="Codice Fiscale"
       />
@@ -26,7 +26,7 @@ import { defineComponent } from "vue"
 export default defineComponent({
   data() {
     return {
-      idcode: "",
+      id_user: "",
       password: "",
     }
   },
@@ -34,7 +34,7 @@ export default defineComponent({
     async onSubmit() {
       try {
         await axios.post("/api/auth/login", {
-          username: this.idcode,
+          id_user: this.id_user,
           password: this.password,
         })
         window.location.href = "/"

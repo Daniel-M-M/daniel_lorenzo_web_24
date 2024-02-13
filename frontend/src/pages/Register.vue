@@ -5,12 +5,12 @@ import { defineComponent } from "vue"
 export default defineComponent({
   data() {
     return {
-      id_user: "" as FormDataEntryValue,
-      user_name: "" as FormDataEntryValue,
-      user_surname: "" as FormDataEntryValue,
-      email_address: "" as FormDataEntryValue,
-      password: "" as FormDataEntryValue,
-      confirmPassword: "" as FormDataEntryValue,
+      id_user: "",
+      user_name: "",
+      user_surname: "",
+      email_address: "",
+      password: "",
+      confirmPassword: "",
     }
   },
   methods: {
@@ -22,7 +22,10 @@ export default defineComponent({
       try {
         await axios.post("/api/auth/register", {
           id_user: this.id_user,
+          user_name: this.user_name,
+          user_surname: this.user_surname,
           password: this.password,
+          email_address: this.email_address,
         })
         window.location.href = "/"
       } catch (e: any) {
