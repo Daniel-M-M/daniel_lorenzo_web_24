@@ -5,9 +5,11 @@
   import UserInfo from "./components/user-info.vue"
   import PrestazionePrezzo from "./components/prestazione_item.vue"
   import { User } from "./types"
+  import BookForm from "./components/book-form.vue";
+  import BookItem from "./components/book-item.vue";
 
   export default defineComponent({
-    components: { UserInfo, PrestazionePrezzo },
+    components: {BookItem, BookForm, UserInfo, PrestazionePrezzo },
     data() {
       return {
         user: null as User | null,
@@ -39,10 +41,14 @@
   </header>
   <main class="grow py-6 border-y border-slate-200 mx-6">
     <!-- Passa l'utente come prop a tutte le pagine del router -->
-    <RouterView :user="user" />
+    <div v-if="user" class="">
+      <book-form :user="user"></book-form>
+    </div>
+    <template v-else>
+      <RouterView :user="user"/>
+    </template>
     <!-- QUi va anche la visione dei suoi booking se ci sono-->
   </main>
   <footer class="flex p-6">
-    <PrestazionePrezzo></PrestazionePrezzo>
   </footer>
 </template>

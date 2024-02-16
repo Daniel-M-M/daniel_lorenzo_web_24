@@ -46,7 +46,7 @@ router.beforeEach(async (to) => {
   }
 
   if (to.meta.requiredLogin && user?.role === "admin") {
-    return { path:"/admin" }
+    return { path:"/admin" }//creato io...
   }
 })
 
