@@ -1,7 +1,7 @@
 <script lang="ts">
 
   import axios from "axios"
-  import { defineComponent } from "vue"
+  import {defineComponent, PropType} from "vue"
   import BookForm from "../components/book-form.vue"
   import PrestazioneItem from "../components/prestazione_item.vue"
   import { Prestazione } from "../types"
@@ -10,7 +10,7 @@
     components: { BookForm, PrestazioneItem },
     data() {
       return {
-        services: [] as Prestazione[],
+        services: Object as PropType<Prestazione>,
       }
     },
     methods: {
@@ -27,10 +27,10 @@
 
 <template>
   <div>
-    <h1>Dr. House Clinic</h1>
+    <h1 class="text-m font-semibold leading-6 text-gray-900">Dr. House Clinic</h1>
   </div>
   <div>
-    <h3>Chi siamo:</h3>
+    <h2>Chi siamo:</h2>
     <p>
       Siamo una Clinica per i casi più strani che esistono e siamo capace di trovare una soluzione per i vostro problemi.
       Contiamo con la capacità intuitiva del nostro fondatore il Dr. House... più bravo medico di tutti i tempi.
@@ -39,21 +39,18 @@
     </p>
   </div>
   <div>
-    <h3>Le nostre principali specialità:</h3>
     <div class="prose">
-
-      <div v-if="services.length > 0" class="divide-y divide-gray-100">
+      <div class="divide-y divide-gray-100">
+        <h2 class="text-l font-semibold leading-6 text-gray-900">Le nostre specialità:</h2>
         <PrestazioneItem
             v-for="service in services"
             :key="service.id"
             :service="service"
         />
-      </div>
-      <div v-else>
-        <p>Non hai ancora prenotato una visita.</p>
+        <p>E molto ancora...</p>
       </div>
     </div>
-    <p>E molto ancora...</p>
+
   </div>
 <!-- <book-form>Prenota Una Visita</book-form>
       <BookForm v-if="user" @submit="getBooking" /> -->

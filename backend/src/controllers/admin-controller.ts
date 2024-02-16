@@ -27,10 +27,13 @@ export const updatePrestazione = async (req: Request, res: Response) => {
         return
     }
 
+
+
     const conn = await getConnection()
-    await conn.execute("UPDATE prestazione SET costo=? WHERE req.body.id = prestazione.id",
+    await conn.execute("UPDATE prestazione SET costo=? WHERE prestazione.id = ?",
         [
             req.body.costo,
+            req.body.id,
         ])
     res.json({ success: true,  message: "Aggiornamento effettuato con successo"})
 }
@@ -44,7 +47,7 @@ export const cancellaPrestazione = async (req: Request, res: Response) => {
     }
 
     const conn = await getConnection()
-    await conn.execute("DELETE FROM prestazione WHERE req.body.id = prestazione.id")
+    await conn.execute("DELETE FROM prestazione WHERE prestazione.id = ?", [req.body.id])
     res.json({ success: true,  message: "La prestazione è stata cancellata con successo"})
 }
 
@@ -79,11 +82,12 @@ export const updateDoctors = async (req: Request, res: Response) => {
     }
 
     const conn = await getConnection()
-    await conn.execute("UPDATE doctors SET prestazione1=?, prestazione2=?, prestazione3=? WHERE req.body.id_doctor = doctors.id_doctor",
+    await conn.execute("UPDATE doctors SET prestazione1=?, prestazione2=?, prestazione3=? WHERE doctors.id_doctor = ?",
         [
             req.body.prestazione1,
             req.body.prestazione2,
             req.body.prestazione3,
+            req.body.id_doctor,
         ])
     res.json({ success: true,  message: "Aggiornamento effettuato con successo"})
 }
@@ -97,12 +101,12 @@ export const cancellaDottore = async (req: Request, res: Response) => {
     }
 
     const conn = await getConnection()
-    await conn.execute("DELETE FROM doctors WHERE req.body.id_doctor = doctors.id_doctor")
+    await conn.execute("DELETE FROM doctors WHERE doctors.id_doctor = ?", [req.body.id_doctor])
     res.json({ success: true,  message: "Il dottore è stata cancellato con successo"})
 }
 
 export const getPrestazionePerDottore = async (req: Request, res: Response) => {
     const conn = await getConnection()
-    const [booking] = await conn.execute("SELECT booking.id as id, booking.id_prestazione, doctors.doth_name, doctors.doth_surname, booking.data_prenotazione, booking.ora_prenotazione FROM booking LEFT OUTER JOIN doctors ON booking.id_doctor=doctors.id_doctor WHERE id_doctor=req.body.id_doctor ORDER BY booking.data_prenotazione, booking.ora_prenotazione DESC")
+    const [booking] = await conn.execute("SELECT booking.id as id, booking.id_prestazione, doctors.doth_name, doctors.doth_surname, booking.data_prenotazione, booking.ora_prenotazione FROM booking LEFT OUTER JOIN doctors ON booking.id_doctor=doctors.id_doctor WHERE booking.id_doctor = ? ORDER BY booking.data_prenotazione, booking.ora_prenotazione DESC", [req.body.id_doctor])
     res.json(booking)
 }

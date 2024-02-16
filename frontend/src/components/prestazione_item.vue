@@ -14,8 +14,7 @@
   <div>
     <div class="flex min-w-0 gap-x-4">
       <div class="min-w-0 flex-auto">
-        <p class="text-sm font-semibold leading-6 text-gray-900">{{ service?.titolo }}</p>
-        <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ service?.costo }}</p>
+        <p class="text-sm font-semibold leading-6 text-gray-900">{{ service?.titolo }} $  {{ service?.costo }}</p>
       </div>
     </div>
   </div>
