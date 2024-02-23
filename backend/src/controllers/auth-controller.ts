@@ -55,7 +55,7 @@ export const login = async (req: Request, res: Response) => {
 
     const connection = await getConnection()
     const [results] = await connection.execute(
-        "SELECT id_user, password, role FROM users WHERE id_user=?",
+        "SELECT id_user, user_surname, password, role FROM users WHERE id_user=?",
         [id_user]
     )
 

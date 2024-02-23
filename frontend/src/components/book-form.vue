@@ -44,7 +44,6 @@
           window.location.href = "/"
         } catch (e: any) {
           if (e.response) { // Per le bad response TODO trattare qui i log di errori?
-            alert(e.message)
             console.error("Errore completo:", e);
             console.error("Errore caso if recupero del' id_user:", this.book);
           } else {
