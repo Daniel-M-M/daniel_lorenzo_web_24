@@ -19,7 +19,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <span class="text-sm">{{ user?.user_surname }}</span>
+  <p class="text-sm">Sr. {{ user?.id_user }}</p>
   <div
     class="h-9 w-9 flex rounded-full"
     :class="{ 'bg-blue-500': user?.role !== 'admin', 'bg-rose-500': user?.role === 'admin' }"

@@ -44,13 +44,6 @@ export const register = async (req: Request, res: Response) => {
 }
 
 export const login = async (req: Request, res: Response) => {
-    if (req.body.id_user.isEmpty() || req.body.password.isEmpty()) {
-        return res.status(400).send("Codice Fiscale o Password is missing")
-    }
-
-    if (req.body.id_user.isValid() || req.body.password.is.isValid()) {
-        return res.status(400).send("Codice Fiscale o Password not valid")
-    }
 
     const user = decodeAccessToken(req, res)
     if (user) {

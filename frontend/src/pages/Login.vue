@@ -20,32 +20,34 @@
 </template>
 
 <script lang="ts">
-import axios from "axios"
-import { defineComponent } from "vue"
+  import axios from "axios"
+  import { defineComponent } from "vue"
 
-export default defineComponent({
-  data() {
-    return {
-      id_user: "",
-      password: "",
-    }
-  },
-  methods: {
-    async onSubmit() {
-      try {
-        await axios.post("/api/auth/login", {
-          id_user: this.id_user,
-          password: this.password,
-        })
-        window.location.href = "/"
-      } catch (e: any) {
-        if (e.response) {
-          alert(`${e.response.status} - ${e.response.statusText}\n${e.response.data}`)
-        } else {
-          alert(e.message)
-        }
+  export default defineComponent({
+    data() {
+      return {
+        id_user: "",
+        password: "",
       }
     },
-  },
-})
+    methods: {
+      async onSubmit() {
+        try {
+          await axios.post("/api/auth/login", {
+            id_user: this.id_user,
+            password: this.password,
+          })
+          window.location.href = "/"
+        } catch (e: any) {
+          if (e.response) {
+            alert(`${e.response.status} - ${e.response.statusText}\n${e.response.data}`)
+            console.error("Erro nel if di response di login.vue")
+          } else {
+            alert(e.message)
+            console.error("Erro nel if di response di login.vue")
+          }
+        }
+      },
+    },
+  })
 </script>

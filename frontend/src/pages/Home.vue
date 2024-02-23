@@ -44,7 +44,6 @@
         <h2 class="text-l font-semibold leading-6 text-gray-900">Le nostre specialità:</h2>
         <PrestazioneItem
             v-for="service in services"
-            :key="service.id"
             :service="service"
         />
         <p>E molto ancora...</p>

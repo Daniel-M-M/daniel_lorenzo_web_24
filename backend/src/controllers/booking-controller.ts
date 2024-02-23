@@ -1,53 +1,53 @@
 import { Request, Response } from "express"
 import { getConnection } from "../utils/db"
 import { decodeAccessToken } from "../utils/auth"
-import {RowDataPacket} from "mysql2";
 
+// TODO manca solo gli avvisi per l'utente, anche quelli non vedenti
 export const createBooking = async (req: Request, res: Response) => {
-    // Verifica che l'utente abbia effettuato il login
-    const user = decodeAccessToken(req, res)
-    if (!user) {
-        res.status(403).send("Questa operazione richiede l'autenticazione.")
-        return
+
+    const id_user = req.body.id_user;
+    const id_doctor = req.body.id_doctor;
+    const id_prestazione = req.body.id_prestazione;
+    const data_prenotazione = req.body.data_prenotazione;
+    const ora_prenotazione = req.body.ora_prenotazione;
+
+    // Verifica che tutti i parametri siano definiti
+    if (id_user === undefined || id_doctor === undefined || id_prestazione === undefined || data_prenotazione === undefined || ora_prenotazione === undefined) {
+        console.error("Uno o più parametri mancanti.", id_user, id_doctor, id_prestazione, data_prenotazione, ora_prenotazione);
+        return;
     }
 
+    // Creo una variabile con tutti i booking già fatti con lo stesso dottore data e ora
     const conn = await getConnection()
-    await conn.execute("INSERT INTO booking (id_user, id_doctor, id_prestazione, data_prenotazione, ora_prenotazione) VALUES (?, ?, ?, ?, ?)",
-        [
-        user.id_user,
-        req.body.id_doctor,
-        req.body.id_prenotazione,
-        req.body.data_prenotazione,
-        req.body.ora_prenotazione,
+    const [bookings] = await conn.execute("SELECT * FROM booking WHERE id_doctor=? AND data_prenotazione=? AND ora_prenotazione=?", [
+        id_doctor,
+        data_prenotazione,
+        ora_prenotazione
     ])
-    res.json({ success: true,  message: "Prenotazione effettuata con successo"})
-}
 
-export const checkBooking = async (req: Request, res: Response) => {
-    // Verifica che l'utente abbia effettuato il login
-    const user = decodeAccessToken(req, res)
-    if (!user) {
-        res.status(403).send("Questa operazione richiede l'autenticazione.")
+    // Verifico se quello slot di prenotazione esiste
+    if (Array.isArray(bookings) && bookings.length > 0) {
+        // TODO migliorare questo avviso
+        console.error("Booking già creato")
         return
     }
 
-    const conn = await getConnection()
-    const [bookings] = await conn.execute("SELECT data_prenotazione, ora_prenotazione FROM booking")
-    let isBooked = false;
-    for (const book of bookings as RowDataPacket[]) {
-        if (book.data_prenotazione.toISOString() === req.body.data_prenotazione.toISOString() &&
-            book.ora_prenotazione === req.body.ora_prenotazione) {
-            isBooked = true;
-            break;
-        }
+    // Faccio l'inserimento della prenotazione caso non esista
+    try {
+        await conn.execute("INSERT INTO booking (id_user, id_doctor, id_prestazione, data_prenotazione, ora_prenotazione) VALUES (?, ?, ?, ?, ?)",
+            [
+            id_user,
+            id_doctor,
+            id_prestazione,
+            data_prenotazione,
+            ora_prenotazione
+            ])
+    } catch (e) {
+        console.error("Provando inserire nel db", req.body)
     }
 
-    if (isBooked) {
-        res.json({ success: false, message: "Questo periodo è già stato prenotato" });
-    } else {
-        await createBooking(req, res);
-        res.json({ success: true, message: "Prenotazione effettuata con successo" });
-    }
+    // TODO Migliorare questa forma di avvisare che il book è stato creato
+    res.json({ success: true,  message: "Prenotazione effettuata con successo"})
 }
 
 export const deleteBooking = async (req: Request, res: Response) => {
