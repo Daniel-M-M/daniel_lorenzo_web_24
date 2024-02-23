@@ -13,6 +13,8 @@
         book: {} as Booking,
         services: [] as Prestazione[],
         doctors: [] as Doctors[],
+        errorMessage: "",
+        errorStatus: "",
       }
     },
     computed: {
@@ -33,21 +35,24 @@
         }
 
         try {
-          await axios.post("/api/prenotation", {
+          const response = await axios.post("/api/prenotation", {
             id_user: this.book.id_user,
             id_doctor: this.book.id_doctor,
             id_prestazione: this.book.id_prestazione,
             data_prenotazione: this.book.data_prenotazione,
             ora_prenotazione: this.book.ora_prenotazione,
           });
+
           this.$emit("submit");
-          window.location.href = "/"
+
+          this.errorMessage = response.data.message;
+          this.errorStatus = response.data.success;
+
         } catch (e: any) {
           if (e.response) { // Per le bad response TODO trattare qui i log di errori?
             console.error("Errore completo:", e);
-            console.error("Errore caso if recupero del' id_user:", this.book);
+            console.error("Errore nel response il contenuto inviato è:", this.book);
           } else {
-            alert(e.message)
             console.error("Errore caso else recupero del' id_user:", this.book);
           }
         }
@@ -82,6 +87,10 @@
   })
 </script>
 
+<script setup lang="ts">
+  import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid'
+</script>
+
 <template>
   <div class="prose">
     <h1>Prenotazione</h1>
@@ -112,6 +121,32 @@
       <div>
         <input type="date" v-model="book.data_prenotazione" placeholder="Sceglie Giorno" class="rounded-lg border-slate-200"/>
         <input type="number" v-model="book.ora_prenotazione" name="booking_ora" min="8" max="18" value="8" step="1" placeholder="Sceglie ora" class="rounded-lg border-slate-200"/>
+      </div>
+      <div v-if="errorStatus">
+        <div class="rounded-md bg-green-50 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <CheckCircleIcon class="h-5 w-5 text-green-400" aria-hidden="true" />
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium text-green-800">{{ errorMessage }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else >
+        <div v-if="!errorStatus && errorStatus !== ''">
+          <div class="rounded-md bg-red-50 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-red-800">{{ errorMessage }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <button
           type="submit"

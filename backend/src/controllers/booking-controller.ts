@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { getConnection } from "../utils/db"
 import { decodeAccessToken } from "../utils/auth"
 
-// TODO manca solo gli avvisi per l'utente, anche quelli non vedenti
+// TODO manca solo gli avvisi per l'utente, anche quelli non vedenti tranne createBooking
 export const createBooking = async (req: Request, res: Response) => {
 
     const id_user = req.body.id_user;
@@ -27,8 +27,7 @@ export const createBooking = async (req: Request, res: Response) => {
 
     // Verifico se quello slot di prenotazione esiste
     if (Array.isArray(bookings) && bookings.length > 0) {
-        // TODO migliorare questo avviso
-        console.error("Booking già creato")
+        res.json({ success: false,  message: "Il dottore selezionato ha già un appuntamento in questa data e ora."})
         return
     }
 
@@ -45,8 +44,6 @@ export const createBooking = async (req: Request, res: Response) => {
     } catch (e) {
         console.error("Provando inserire nel db", req.body)
     }
-
-    // TODO Migliorare questa forma di avvisare che il book è stato creato
     res.json({ success: true,  message: "Prenotazione effettuata con successo"})
 }
 
