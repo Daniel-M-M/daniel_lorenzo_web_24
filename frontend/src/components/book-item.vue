@@ -15,14 +15,23 @@ export default defineComponent({
       services: {} as Prestazione,
       doctors: {} as Doctors,
       errorMessage: "",
-      errorStatus: "",
+      errorStatus: Boolean,
       allMyBooks: {},
     }
   },
   methods: {
-    async deleteBooking() {
-      await axios.delete(`/api/prenotation/$this.book.id}`)
-      this.$emit("delete")
+    async deleteBooking(bookingId: number | string) {
+      try {
+        const response = await axios.delete(`/api/prenotation/${bookingId}`)
+        this.$emit("delete")
+
+        this.errorMessage = response.data.message;
+        this.errorStatus = response.data.success;
+
+        window.location.reload();
+      } catch (error) {
+        console.error("Errore durante la chiamata API:", error);
+      }
     },
 
     async getPrestazione() { // Per renderizzare nel template
@@ -57,15 +66,18 @@ export default defineComponent({
     this.getPrestazione()
     this.getDottore()
     this.getMyBookings()
-    this.deleteBooking()
+    //this.deleteBooking()
   },
 })
 </script>
 
+<script setup lang="ts">
+import { XCircleIcon } from '@heroicons/vue/20/solid'
+</script>
+
 <template>
-  <!-- TODO risolvere cancella booking -->
-  <!-- <button v-if="canDelete" @click="deleteBooking" class="btn rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Cancella</button> -->
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-1 mt-4">
+  <h1 class="text-2xl font-bold tracking-tight text-gray-900 mt-3">Le Mie Prenotazione</h1>
+  <div v-if="errorStatus" class="grid grid-cols-1 gap-4 sm:grid-cols-1 mt-4">
     <div v-for="myBook in allMyBooks" class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
       <div class="min-w-0">
         <a class="focus:outline-none grid grid-cols-2 gap-1 sm:grid-cols-2">
@@ -77,12 +89,23 @@ export default defineComponent({
             <p v-if="doctor.id_doctor === myBook.id_doctor" class="truncate text-sm text-gray-500">Dott. {{ doctor.doth_surname }} {{ doctor.doth_name}}</p>
           </div>
           <p class="truncate text-sm text-gray-500">{{ myBook.data_prenotazione.split('T')[0].split('-').reverse().join('-') }} alle {{ myBook.ora_prenotazione}}</p>
-          <button type="submit" @click="deleteBooking" class="absolute right-5 z-10 mt-5 w-30 origin-top-right rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Cancella</button>
+          <button @click="deleteBooking(myBook.id)" :value="myBook.id" type="submit" class="absolute right-5 z-10 mt-5 w-30 origin-top-right rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Cancella</button>
         </a>
       </div>
     </div>
   </div>
-
+  <div v-else>
+    <div class="rounded-md bg-red-50 p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-red-800">{{ errorMessage }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 

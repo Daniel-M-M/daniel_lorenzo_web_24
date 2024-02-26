@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { getConnection } from "../utils/db"
 import { decodeAccessToken } from "../utils/auth"
 
-// TODO manca solo gli avvisi per l'utente, anche quelli non vedenti tranne createBooking
+// TODO manca solo deleteBooking
 export const createBooking = async (req: Request, res: Response) => {
 
     const id_user = req.body.id_user;
@@ -47,6 +47,7 @@ export const createBooking = async (req: Request, res: Response) => {
     res.json({ success: true,  message: "Prenotazione effettuata con successo"})
 }
 
+//TODO add controllo dei probabile errori nel deleteBooking.
 export const deleteBooking = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
     const user = decodeAccessToken(req, res)
@@ -59,18 +60,25 @@ export const deleteBooking = async (req: Request, res: Response) => {
 
     const [booking] = await conn.execute("SELECT * FROM booking WHERE id=?", [req.params.id])
     if (!Array.isArray(booking) || booking.length == 0) {
-        res.status(404).send("Post non trovato.")
+        console.error("Book non trovato", req.params)
+        res.status(404).send("Book non trovato.")
         return
     }
 
-    const book = booking[0] as any
-    if (book.id_user != user.id_user && user.role != "admin") {
+    //Questa funzione serve per verificare se l'usuario è login e se è admin
+    /*const book = booking[0] as any
+    if (book.id_user != user.id_user || user.role === "admin") {
+        console.error("Error durante il check dei permessi per cancellare", req.body)
         res.status(403).send("Non hai i permessi per eliminare questo post.")
         return
-    }
+    }*/
 
-    await conn.execute("DELETE FROM booking WHERE id=?", [req.params.id])
-    res.json({ success: true, message: "Prenotazione cancellata con successo" })
+    try {
+        await conn.execute("DELETE FROM booking WHERE id=?", [req.params.id])
+        res.json({ success: false, message: "Prenotazione cancellata con successo" })
+    } catch (error) {
+        console.error("Errore catturato durante la cancellazione del SQL")
+    }
 }
 
 export const getAllBooking = async (req: Request, res: Response) => {
