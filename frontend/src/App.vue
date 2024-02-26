@@ -43,6 +43,7 @@
     <!-- Passa l'utente come prop a tutte le pagine del router -->
     <div v-if="user" class="">
       <book-form :user="user"></book-form>
+      <book-item :user="user"></book-item>
     </div>
     <template v-else>
       <RouterView :user="user"/>

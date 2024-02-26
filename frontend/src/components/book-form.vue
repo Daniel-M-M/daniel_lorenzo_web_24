@@ -49,7 +49,7 @@
           this.errorStatus = response.data.success;
 
         } catch (e: any) {
-          if (e.response) { // Per le bad response TODO trattare qui i log di errori?
+          if (e.response) {
             console.error("Errore completo:", e);
             console.error("Errore nel response il contenuto inviato è:", this.book);
           } else {
@@ -61,7 +61,7 @@
       async getPrestazione() { // Per renderizzare nel template
         try {
           const response = await axios.get("/api/prestazioni/get");
-          this.services = response.data; //salvo tutte le prenotazione qui
+          this.services = response.data; //salvo tutte le prestazione qui
         } catch (error) {
           console.error("Errore durante il recupero delle prestazioni:", error);
         }

@@ -73,14 +73,14 @@ export const deleteBooking = async (req: Request, res: Response) => {
     res.json({ success: true, message: "Prenotazione cancellata con successo" })
 }
 
-export const getMyBooking = async (req: Request, res: Response) => {
+export const getAllBooking = async (req: Request, res: Response) => {
     const user = decodeAccessToken(req, res)
     if (!user) {
         res.status(403).send("Questa operazione richiede l'autenticazione.")
         return
     }
     const conn = await getConnection()
-    const [booking] = await conn.execute("SELECT booking.id_user, doctors.doth_name, doctors.doth_surname, booking.data_prenotazione, booking.ora_prenotazione, booking.id_prestazione FROM booking LEFT OUTER JOIN doctors ON booking.id_doctor=doctors.id_doctor WHERE id_user=? OR doctors.id_doctor=? ORDER BY booking.data_prenotazione, booking.ora_prenotazione DESC", [user.id_user, user.id_user])
+    const [booking] = await conn.execute("SELECT * FROM booking ORDER BY data_prenotazione, ora_prenotazione DESC")
     res.json(booking)
 }
 
