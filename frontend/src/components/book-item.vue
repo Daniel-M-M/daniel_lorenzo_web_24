@@ -6,7 +6,6 @@ import {Booking, Doctors, Prestazione, User} from "../types";
 export default defineComponent({
   props: {
     user: Object as PropType<User>,
-    //canDelete: Boolean,
   },
   emits: ["delete"],
   data() {
@@ -28,7 +27,10 @@ export default defineComponent({
         this.errorMessage = response.data.message;
         this.errorStatus = response.data.success;
 
-        window.location.reload();
+        setTimeout(() => {
+          this.errorStatus = Boolean;
+        }, 1000);
+
       } catch (error) {
         console.error("Errore durante la chiamata API:", error);
       }
@@ -66,7 +68,6 @@ export default defineComponent({
     this.getPrestazione()
     this.getDottore()
     this.getMyBookings()
-    //this.deleteBooking()
   },
 })
 </script>

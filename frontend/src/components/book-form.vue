@@ -48,6 +48,10 @@
           this.errorMessage = response.data.message;
           this.errorStatus = response.data.success;
 
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+
         } catch (e: any) {
           if (e.response) {
             console.error("Errore completo:", e);
@@ -120,7 +124,7 @@
       </div>
       <div>
         <input type="date" v-model="book.data_prenotazione" placeholder="Sceglie Giorno" class="rounded-lg border-slate-200"/>
-        <input type="number" v-model="book.ora_prenotazione" name="booking_ora" min="8" max="18" value="8" step="1" placeholder="Sceglie ora" class="rounded-lg border-slate-200"/>
+        <input type="number" v-model="book.ora_prenotazione" name="booking_ora" min="8" max="18" value="8" step="1" placeholder="Sceglie ora" class="rounded-lg border-slate-200 ml-5"/>
       </div>
       <div v-if="errorStatus">
         <div class="rounded-md bg-green-50 p-4">
