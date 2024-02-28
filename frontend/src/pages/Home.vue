@@ -2,12 +2,11 @@
 
   import axios from "axios"
   import {defineComponent, PropType} from "vue"
-  import BookForm from "../components/book-form.vue"
   import PrestazioneItem from "../components/prestazione_item.vue"
   import { Prestazione } from "../types"
 
   export default defineComponent({
-    components: { BookForm, PrestazioneItem },
+    components: { PrestazioneItem },
     data() {
       return {
         services: Object as PropType<Prestazione>,
@@ -49,8 +48,5 @@
         <p>E molto ancora...</p>
       </div>
     </div>
-
   </div>
-<!-- <book-form>Prenota Una Visita</book-form>
-      <BookForm v-if="user" @submit="getBooking" /> -->
 </template>

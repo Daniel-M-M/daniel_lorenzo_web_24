@@ -2,10 +2,8 @@
 import axios from "axios"
 import { PropType, defineComponent } from "vue"
 import { User } from "../types"
-import BookForm from "./book-form.vue";
 
 export default defineComponent({
-  components: {BookForm},
   props: {
     user: Object as PropType<User>,
   },

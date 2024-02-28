@@ -4,12 +4,13 @@
   import { defineComponent } from "vue"
   import UserInfo from "./components/user-info.vue"
   import PrestazionePrezzo from "./components/prestazione_item.vue"
+  import AdminView from "./components/admin.vue"
   import { User } from "./types"
   import BookForm from "./components/book-form.vue";
   import BookItem from "./components/book-item.vue";
 
   export default defineComponent({
-    components: {BookItem, BookForm, UserInfo, PrestazionePrezzo },
+    components: {AdminView, BookItem, BookForm, UserInfo, PrestazionePrezzo },
     data() {
       return {
         user: null as User | null,
@@ -41,14 +42,17 @@
   </header>
   <main class="grow py-6 border-y border-slate-200 mx-6">
     <!-- Passa l'utente come prop a tutte le pagine del router -->
-    <div v-if="user" class="">
+    <div v-if="user && user.role !== 'admin'" class="">
       <book-form :user="user"></book-form>
       <book-item :user="user"></book-item>
+    </div>
+    <div v-else-if="user && user.role === 'admin'" class="">
+      <AdminView :user="user"></AdminView>
+      <!-- TODO parte della vista del superuser -->
     </div>
     <template v-else>
       <RouterView :user="user"/>
     </template>
-    <!-- QUi va anche la visione dei suoi booking se ci sono-->
   </main>
   <footer class="flex p-6">
   </footer>
