@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { getConnection } from "../utils/db"
 import { decodeAccessToken } from "../utils/auth"
 
-// TODO manca solo deleteBooking
 export const createBooking = async (req: Request, res: Response) => {
 
     const id_user = req.body.id_user;
@@ -113,5 +112,17 @@ export const getDoctors = async (req: Request, res: Response) => {
     );
 
     res.json(doctors);
+
+}
+
+export const getUtenti = async (req: Request, res: Response) => {
+
+    const conn = await getConnection();
+
+    const [users] = await conn.execute(
+        "SELECT id_user, user_name, user_surname, email_address, role FROM users"
+    );
+
+    res.json(users);
 
 }
