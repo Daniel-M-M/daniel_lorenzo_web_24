@@ -10,12 +10,11 @@ export default defineComponent({
   emits: ["delete"],
   data() {
     return {
-      book: {} as Booking,
       services: {} as Prestazione,
       doctors: {} as Doctors,
       errorMessage: "",
       errorStatus: Boolean,
-      allMyBooks: {},
+      allMyBooks: {} as Booking,
     }
   },
   methods: {

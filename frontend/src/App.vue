@@ -47,11 +47,11 @@
       <book-item :user="user"></book-item>
     </div>
     <div v-else-if="user && user.role === 'admin'" class="">
-      <AdminView :user="user"></AdminView>
+      <AdminView></AdminView>
       <!-- TODO parte della vista del superuser -->
     </div>
     <template v-else>
-      <RouterView :user="user"/>
+      <RouterView/>
     </template>
   </main>
   <footer class="flex p-6">
