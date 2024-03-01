@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getConnection } from "../utils/db";
 import { decodeAccessToken } from "../utils/auth"
 
+
 export const createPrestazione = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
     const user = decodeAccessToken(req, res)
@@ -32,6 +33,7 @@ export const createPrestazione = async (req: Request, res: Response) => {
     }
 }
 
+//TODO testare questa funzione
 export const updatePrestazione = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
     const user = decodeAccessToken(req, res)
@@ -39,8 +41,6 @@ export const updatePrestazione = async (req: Request, res: Response) => {
         res.status(403).send("Questa operazione richiede l'autenticazione.")
         return
     }
-
-
 
     const conn = await getConnection()
     await conn.execute("UPDATE prestazione SET costo=? WHERE prestazione.id = ?",
@@ -60,8 +60,13 @@ export const cancellaPrestazione = async (req: Request, res: Response) => {
     }
 
     const conn = await getConnection()
-    await conn.execute("DELETE FROM prestazione WHERE prestazione.id = ?", [req.body.id])
-    res.json({ success: true,  message: "La prestazione è stata cancellata con successo"})
+    try {
+        await conn.execute("DELETE FROM prestazione WHERE id = ?", [req.params.id])
+        res.json({ success: false,  message: "La prestazione è stata cancellata"})
+    } catch (e) {
+        console.error("Error nel delete del controller", req.params.id)
+    }
+
 }
 
 export const createDoctors = async (req: Request, res: Response) => {
@@ -99,6 +104,7 @@ export const createDoctors = async (req: Request, res: Response) => {
     }
 }
 
+//TODO verificare questa funzione
 export const updateDoctors = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
     const user = decodeAccessToken(req, res)
@@ -118,21 +124,31 @@ export const updateDoctors = async (req: Request, res: Response) => {
     res.json({ success: true,  message: "Aggiornamento effettuato con successo"})
 }
 
+//TODO questa funzione da errore non lo so dove, mettere piu try/catch
 export const cancellaDottore = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
     const user = decodeAccessToken(req, res)
     if (!user) {
         res.status(403).send("Questa operazione richiede l'autenticazione.")
+        console.error("Error nel decode user nel delete dottore", req.params)
         return
     }
 
     const conn = await getConnection()
-    await conn.execute("DELETE FROM doctors WHERE doctors.id_doctor = ?", [req.body.id_doctor])
-    res.json({ success: true,  message: "Il dottore è stata cancellato con successo"})
+    try {
+        await conn.execute("DELETE FROM doctors WHERE id_doctor = ?", [req.params.id_doctor])
+        res.json({ success: false,  message: "Il dottore è stata cancellato con successo"})
+        console.error("Error cancellation dottore: Query/try", req.params)
+    } catch (e) {
+        console.error("Error cancellation dottore: Query/catch", req.params)
+    }
+
 }
 
+//TODO verificare anche questa funzione
 export const getPrestazionePerDottore = async (req: Request, res: Response) => {
     const conn = await getConnection()
-    const [booking] = await conn.execute("SELECT booking.id as id, booking.id_prestazione, doctors.doth_name, doctors.doth_surname, booking.data_prenotazione, booking.ora_prenotazione FROM booking LEFT OUTER JOIN doctors ON booking.id_doctor=doctors.id_doctor WHERE booking.id_doctor = ? ORDER BY booking.data_prenotazione, booking.ora_prenotazione DESC", [req.body.id_doctor])
+    const [booking] = await conn.execute("SELECT booking.id as id, booking.id_prestazione, doctors.doth_name, doctors.doth_surname, booking.data_prenotazione, booking.ora_prenotazione FROM booking LEFT OUTER JOIN doctors ON booking.id_doctor=doctors.id_doctor WHERE booking.id_doctor = ? ORDER BY booking.data_prenotazione, booking.ora_prenotazione DESC",
+        [req.body.id_doctor])
     res.json(booking)
 }

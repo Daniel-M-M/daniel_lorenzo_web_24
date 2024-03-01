@@ -153,7 +153,8 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid'
       <div>
         <label for="newPassword" class="block text-sm font-medium leading-6 text-gray-900">New Password</label>
         <input
-            name="password"
+            name="newPassword"
+            id="newPassword"
             type="password"
             v-model="password"
             class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -163,6 +164,7 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid'
       <div>
         <label for="confirmPassword" class="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
         <input
+            id="confirmPassword"
             name="confirmPassword"
             type="password"
             v-model="confirmPassword"

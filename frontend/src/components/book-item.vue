@@ -28,7 +28,7 @@ export default defineComponent({
 
         setTimeout(() => {
           this.errorStatus = Boolean;
-        }, 1000);
+        }, 2000);
 
       } catch (error) {
         console.error("Errore durante la chiamata API:", error);
