@@ -46,7 +46,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { CheckCircleIcon } from '@heroicons/vue/20/solid'
+  import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid'
 </script>
 
 <template>
@@ -58,6 +58,20 @@
         </div>
         <div class="ml-3">
           <p class="text-sm font-medium text-green-800">{{ errorMessage }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div v-else >
+    <div v-if="!errorStatus && errorStatus !== ''">
+      <div class="rounded-md bg-red-50 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-red-800">{{ errorMessage }}</p>
+          </div>
         </div>
       </div>
     </div>

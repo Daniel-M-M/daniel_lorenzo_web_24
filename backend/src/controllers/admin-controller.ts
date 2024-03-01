@@ -7,11 +7,19 @@ export const createPrestazione = async (req: Request, res: Response) => {
     const user = decodeAccessToken(req, res)
     if (!user) {
         res.status(403).send("Questa operazione richiede l'autenticazione.")
-        console.error("Errore nell'autenticazione durante l'inserzione della prestazione")
+        console.error("Errore nell'autenticazione durante l'inserzione della prestazione", req)
         return
     }
 
     const conn = await getConnection()
+    const [prestazioni] = await conn.execute("SELECT titolo FROM prestazione WHERE titolo=?", [
+        req.body.titolo,
+    ])
+
+    if (Array.isArray(prestazioni) && prestazioni.length > 0) {
+        res.json({ success: false,  message: "Prestazione già esiste"})
+        return
+    }
     try {
         await conn.execute("INSERT INTO prestazione (titolo, costo) VALUES (?, ?)",
             [
@@ -60,22 +68,35 @@ export const createDoctors = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
     const user = decodeAccessToken(req, res)
     if (!user) {
-        res.status(403).send("Questa operazione richiede l'autenticazione.")
+        res.json({ success: false, message: "Questa operazione richiede l'autenticazione."})
         return
     }
 
     const conn = await getConnection()
-    await conn.execute("INSERT INTO doctors (id_doctor, doth_name, doth_surname, password, prestazione1, prestazione2, prestazione3) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [
-            req.body.id_doctor,
-            req.body.doth_name,
-            req.body.doth_surname,
-            req.body.password,
-            req.body.prestazione1,
-            req.body.prestazione2,
-            req.body.prestazione3,
-        ])
-    res.json({ success: true,  message: "Dottore aggiunto con successo successo"})
+    const [dottori] = await conn.execute("SELECT id_doctor FROM doctors WHERE id_doctor=?", [
+        req.body.id_doctor,
+    ])
+
+    if (Array.isArray(dottori) && dottori.length > 0) {
+        res.json({ success: false,  message: "Questo dottore già esiste"})
+        return
+    }
+
+    try {
+        await conn.execute("INSERT INTO doctors (id_doctor, doth_name, doth_surname, password, prestazione1, prestazione2, prestazione3) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            [
+                req.body.id_doctor,
+                req.body.doth_name,
+                req.body.doth_surname,
+                req.body.password,
+                req.body.prestazione1,
+                req.body.prestazione2,
+                req.body.prestazione3,
+            ])
+        res.json({ success: true,  message: "Dottore aggiunto con successo successo"})
+    } catch (e) {
+        console.error("Error nella query di inserimento dottore", req.body)
+    }
 }
 
 export const updateDoctors = async (req: Request, res: Response) => {
