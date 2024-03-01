@@ -1,5 +1,5 @@
-import {Request, Response} from "express";
-import {getConnection} from "../utils/db";
+import { Request, Response } from "express";
+import { getConnection } from "../utils/db";
 import { decodeAccessToken } from "../utils/auth"
 
 export const createPrestazione = async (req: Request, res: Response) => {
@@ -7,16 +7,21 @@ export const createPrestazione = async (req: Request, res: Response) => {
     const user = decodeAccessToken(req, res)
     if (!user) {
         res.status(403).send("Questa operazione richiede l'autenticazione.")
+        console.error("Errore nell'autenticazione durante l'inserzione della prestazione")
         return
     }
 
     const conn = await getConnection()
-    await conn.execute("INSERT INTO prestazione (titolo, costo) VALUES (?, ?)",
-        [
-            req.body.titolo,
-            req.body.costo,
-        ])
-    res.json({ success: true,  message: "Prestazione effettuata con successo"})
+    try {
+        await conn.execute("INSERT INTO prestazione (titolo, costo) VALUES (?, ?)",
+            [
+                req.body.titolo,
+                req.body.costo,
+            ])
+        res.json({ success: true,  message: "Prestazione Creata"})
+    } catch (e) {
+        console.error("Errore della query nel admin controller", req.params)
+    }
 }
 
 export const updatePrestazione = async (req: Request, res: Response) => {

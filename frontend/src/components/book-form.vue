@@ -42,6 +42,11 @@
             data_prenotazione: this.book.data_prenotazione,
             ora_prenotazione: this.book.ora_prenotazione,
           });
+          //TODO per pulire i campi
+          //this.book.id_doctor = number
+          //this.book.id_prestazione = number
+          //this.book.data_prenotazione = string
+          //this.book.ora_prenotazione = number
 
           this.$emit("submit");
 

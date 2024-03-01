@@ -10,6 +10,8 @@ export interface Prestazione {
   id: number;
   titolo: string;
   costo: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Doctors {

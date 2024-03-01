@@ -9,7 +9,7 @@ router.delete("/api/prestazione/:id", postsController.cancellaPrestazione)
 
 router.post("/api/doctor/", postsController.createDoctors)
 router.put("/api/doctor/:id", postsController.updateDoctors)
-router.delete("/api/doctor/:id", postsController.cancellaDottore)
+router.delete("/api/doctor/:id ", postsController.cancellaDottore)
 
 router.get("/api/prestazione/:id", postsController.getPrestazionePerDottore)
 

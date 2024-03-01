@@ -47,7 +47,7 @@
       <book-item :user="user"></book-item>
     </div>
     <div v-else-if="user && user.role === 'admin'" class="">
-      <AdminView></AdminView>
+      <AdminView :user="user"></AdminView>
       <!-- TODO parte della vista del superuser -->
     </div>
     <template v-else>
