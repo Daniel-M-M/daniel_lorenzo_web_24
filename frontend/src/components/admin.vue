@@ -11,7 +11,9 @@
     </div>
   </div>
   <h1 class="text-2xl font-bold tracking-tight text-gray-900 mt-6">I nostri Dottori:</h1>
-  <button @click="" :value="services" type="submit" class="flex-auto right-5 z-10 mt-5 w-30 origin-top-right rounded-full bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Inserisce Dottore</button>
+  <button v-if="!mostraComponenteDocForm"@click="mostraDocForm" :value="services" type="submit" class="flex-auto right-5 z-10 mt-5 w-30 origin-top-right rounded-full bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">{{ 'Inserisce Dottore' }}</button>
+  <button v-if="mostraComponenteDocForm" @click="nascondiDocForm" type="submit" class="flex-auto right-5 z-10 mt-5 w-30 origin-top-right rounded-full bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">{{ 'Chiude Form' }}</button>
+  <DoctorsForm v-if="mostraComponenteDocForm"></DoctorsForm>
   <div class="grid grid-cols-1 gap-2 sm:grid-cols-1 mt-2">
     <div v-for="doctor in doctors" class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
       <DottoreItem :doctor="doctor"></DottoreItem>
@@ -32,18 +34,19 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from "vue";
+  import {defineComponent, PropType} from "vue";
   import {Doctors, Prestazione, User} from "../types";
   import axios from "axios";
   import PrestazioneItem from "./prestazione_item.vue"
   import DottoreItem from "./doctors-item.vue"
   import UserItem from "./user-item.vue";
   import PrestazioneForm from "./prestazione-form.vue";
+  import DoctorsForm from "./doctors-form.vue";
 
   //TODO aggiungere funzionalità ai bottoni e forse ordinarli. Aggiungere la view delle prenotazione per dottori.
 
   export default defineComponent ({
-    components: {PrestazioneItem, DottoreItem, UserItem, PrestazioneForm},
+    components: {DoctorsForm, PrestazioneItem, DottoreItem, UserItem, PrestazioneForm},
     name: "admin.vue",
     props: {
       user: Object as PropType<User>
@@ -54,6 +57,7 @@ import {defineComponent, PropType} from "vue";
         doctors: [] as Doctors[] | null,
         users: [] as User[] | null,
         mostraComponentePresForm: false,
+        mostraComponenteDocForm: false,
       }
     },
     methods: {
@@ -72,9 +76,15 @@ import {defineComponent, PropType} from "vue";
       mostraPresForm() {
         this.mostraComponentePresForm = true;
       },
+      mostraDocForm() {
+        this.mostraComponenteDocForm = true;
+      },
       nascondiPresForm() {
         this.mostraComponentePresForm = false;
-      }
+      },
+      nascondiDocForm() {
+        this.mostraComponenteDocForm = false;
+      },
 
     },
     mounted() {
