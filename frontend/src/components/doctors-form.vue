@@ -23,8 +23,8 @@
     },
     computed: {
       canSubmit(): any {
-        // Condizione per abilitare l'invio
-        return this.id_doctor && this.doth_name && this.doth_surname && this.prestazione1 && this.password && this.confirmPassword != ""
+        // Condizione per abilitare l'invio // aggiungere l'obbligo di avere almeno una prestazione
+        return this.id_doctor && this.doth_name && this.doth_surname && this.password && this.confirmPassword != ""
       },
     },
     methods: {

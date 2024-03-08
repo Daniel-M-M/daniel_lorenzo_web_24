@@ -39,7 +39,7 @@
 </script>
 
 <script setup lang="ts">
-import { XCircleIcon } from '@heroicons/vue/20/solid'
+  import { XCircleIcon } from '@heroicons/vue/20/solid'
 </script>
 
 <template>

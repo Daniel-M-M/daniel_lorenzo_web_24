@@ -114,7 +114,7 @@ export const updateDoctors = async (req: Request, res: Response) => {
     }
 
     const conn = await getConnection()
-    await conn.execute("UPDATE doctors SET prestazione1=?, prestazione2=?, prestazione3=? WHERE doctors.id_doctor = ?",
+    await conn.execute("UPDATE doctors SET prestazione1=?, prestazione2=?, prestazione3=? WHERE doctors.id_doctor=?",
         [
             req.body.prestazione1,
             req.body.prestazione2,
@@ -127,22 +127,35 @@ export const updateDoctors = async (req: Request, res: Response) => {
 //TODO questa funzione da errore non lo so dove, mettere piu try/catch
 export const cancellaDottore = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
-    const user = decodeAccessToken(req, res)
-    if (!user) {
+    //const user = decodeAccessToken(req, res)
+    /*if (user?.role !== "admin") {
         res.status(403).send("Questa operazione richiede l'autenticazione.")
         console.error("Error nel decode user nel delete dottore", req.params)
         return
-    }
+    }*/
 
     const conn = await getConnection()
-    try {
-        await conn.execute("DELETE FROM doctors WHERE id_doctor = ?", [req.params.id_doctor])
-        res.json({ success: false,  message: "Il dottore è stata cancellato con successo"})
-        console.error("Error cancellation dottore: Query/try", req.params)
-    } catch (e) {
-        console.error("Error cancellation dottore: Query/catch", req.params)
+
+    const [booking] = await conn.execute("SELECT * FROM doctors WHERE id=?", [req.params.id])
+    if (!Array.isArray(booking) || booking.length == 0) {
+        console.error("Book non trovato", req.params)
+        res.status(404).send("Book non trovato.")
+        return
     }
 
+    try {
+        const result = await conn.execute("DELETE FROM doctors WHERE doctors.id=?", [req.params.id]);
+        if (result.length > 0) {
+            res.json({ success: true,  message: "Il dottore è stato cancellato con successo"});
+        } else {
+            res.status(404).json({ success: false, message: "Nessun dottore trovato con quell'ID"});
+            console.error("error nel else del result.length", req.params)
+        }
+        console.log("Successo nella cancellazione del dottore");
+    } catch (e) {
+        console.error("Errore nella cancellazione del dottore:", e);
+        res.status(500).json({ success: false, message: "Errore durante la cancellazione del dottore"});
+    }
 }
 
 //TODO verificare anche questa funzione

@@ -1,16 +1,16 @@
 import { Router } from "express"
-import * as postsController from "../controllers/admin-controller"
+import * as adminController from "../controllers/admin-controller"
 
 const router = Router()
 
-router.post("/api/prestazione/", postsController.createPrestazione)
-router.put("/api/prestazione/:id", postsController.updatePrestazione)
-router.delete("/api/prestazione/:id", postsController.cancellaPrestazione)
+router.post("/api/prestazione/", adminController.createPrestazione)
+router.put("/api/prestazione/:id", adminController.updatePrestazione)
+router.delete("/api/prestazione/:id", adminController.cancellaPrestazione)
 
-router.post("/api/doctor/", postsController.createDoctors)
-router.put("/api/doctor/:id", postsController.updateDoctors)
-router.delete("/api/doctor/:id ", postsController.cancellaDottore)
+router.post("/api/doctor/", adminController.createDoctors)
+router.put("/api/doctor/:id", adminController.updateDoctors)
+router.delete("/api/doctor/:id", adminController.cancellaDottore)
 
-router.get("/api/prestazione/:id", postsController.getPrestazionePerDottore)
+router.get("/api/prestazione/:id", adminController.getPrestazionePerDottore)
 
 export default router

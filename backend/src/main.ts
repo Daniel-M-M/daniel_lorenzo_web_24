@@ -5,7 +5,7 @@ import express from "express"
 
 import authRouter from "./routers/auth-router"
 import adminRouter from "./routers/admin-router"
-import bookingRouter from "./routers/booking-router";
+import bookingRouter from "./routers/booking-router"
 
 const app = express()
 

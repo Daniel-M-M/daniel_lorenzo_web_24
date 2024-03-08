@@ -1,6 +1,5 @@
 import { Router } from "express"
 import * as postsController from "../controllers/booking-controller"
-import {getUtenti} from "../controllers/booking-controller";
 
 const router = Router()
 

@@ -25,11 +25,11 @@ CREATE TABLE IF NOT EXISTS prestazione (
 
 CREATE TABLE IF NOT EXISTS doctors (
                                        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                       id_doctor INT UNIQUE,
+                                       id_doctor INT NOT NULL,
                                        doth_name VARCHAR(50) NOT NULL,
                                        doth_surname VARCHAR(255) NOT NULL,
                                        password VARCHAR(255) NOT NULL,
-                                       prestazione1 INT NOT NULL,
+                                       prestazione1 INT,
                                        prestazione2 INT,
                                        prestazione3 INT
 ) ENGINE = InnoDB;

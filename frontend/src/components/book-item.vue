@@ -28,6 +28,7 @@ export default defineComponent({
 
         setTimeout(() => {
           this.errorStatus = Boolean;
+          window.location.reload();
         }, 2000);
 
       } catch (error) {
@@ -76,19 +77,20 @@ import { XCircleIcon } from '@heroicons/vue/20/solid'
 </script>
 
 <template>
+  <!-- TODO sta renderizzando male titolo e nome cognome dottore appaiano in centro al posto che alla sinistra -->
   <h1 class="text-2xl font-bold tracking-tight text-gray-900 mt-3">Le Mie Prenotazione</h1>
   <div v-if="errorStatus" class="grid grid-cols-1 gap-4 sm:grid-cols-1 mt-4">
     <div v-for="myBook in allMyBooks" class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
       <div class="min-w-0">
-        <a class="focus:outline-none grid grid-cols-2 gap-1 sm:grid-cols-2">
+        <a class="focus:outline-none grid grid-cols-1 gap-1 sm:grid-cols-1">
           <span class="absolute inset-0" aria-hidden="true" />
           <div v-for="prestazione in services">
             <p v-if="prestazione.id === myBook.id_prestazione" class="text-sm font-medium text-gray-900">{{ prestazione.titolo }}</p>
           </div>
           <div v-for="doctor in doctors">
-            <p v-if="doctor.id_doctor === myBook.id_doctor" class="truncate text-sm text-gray-500">Dott. {{ doctor.doth_surname }} {{ doctor.doth_name}}</p>
+            <p v-if="doctor.id_doctor === myBook.id_doctor" class="text-sm text-gray-500">Dott. {{ doctor.doth_surname }} {{ doctor.doth_name}}</p>
           </div>
-          <p class="truncate text-sm text-gray-500">{{ myBook.data_prenotazione.split('T')[0].split('-').reverse().join('-') }} alle {{ myBook.ora_prenotazione}}</p>
+          <p class="truncate text-sm text-gray-500">Prenotato il: {{ myBook.data_prenotazione.split('T')[0].split('-').reverse().join('/') }} alle {{ myBook.ora_prenotazione}}</p>
           <button @click="deleteBooking(myBook.id)" :value="myBook.id" type="submit" class="absolute right-5 z-10 mt-5 w-30 origin-top-right rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Cancella</button>
         </a>
       </div>
