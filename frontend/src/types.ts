@@ -29,6 +29,6 @@ export interface Booking {
   id_user: string;
   id_doctor: number;
   id_prestazione: number;
-  data_prenotazione: Date;
+  data_prenotazione: string;
   ora_prenotazione: number;
 }

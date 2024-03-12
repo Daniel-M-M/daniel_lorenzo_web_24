@@ -57,8 +57,9 @@ export default defineComponent({
     async getMyBookings() {
       try {
         const allMyBookings = await axios.get("/api/prenotation/")
-        this.allMyBooks = allMyBookings.data.filter((book: { id_user: { toString: () => string; }}) =>
-          book.id_user === this.$props.user?.id_user)
+
+        this.allMyBooks = allMyBookings.data.filter((book: { id_user: { toString: () => string; } }) =>
+            book.id_user === this.$props.user?.id_user)
       } catch (e) {
         console.error("Error nel catch di getMyBookings", this.allMyBooks)
       }

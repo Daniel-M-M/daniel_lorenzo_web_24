@@ -48,7 +48,7 @@ import { XCircleIcon } from '@heroicons/vue/20/solid'
     <div v-if="!errorStatus" class="flex min-w-0 gap-x-4">
       <div class="flex-auto right-5 z-10 m-5 w-30">
         <p class="text-sm font-semibold leading-6 text-gray-900">Dott. {{ doctor?.doth_name }} {{ doctor?.doth_surname }}</p>
-        <p class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">Prestazione Svolte {{ doctor?.prestazione1 }} / {{ doctor?.prestazione2 }} / {{ doctor?.prestazione3 }}</p>
+        <p class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">Prestazioni disponibili: {{ doctor?.prestazione1 }} / {{ doctor?.prestazione2 }} / {{ doctor?.prestazione3 }}</p>
         <button @click="cancellaDottore(doctor.id)" :value="doctor.id" type="submit" class="absolute right-1 top-6 m-5 w-30 rounded-full bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">Cancella</button>
       </div>
     </div>
