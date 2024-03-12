@@ -92,7 +92,7 @@ import { XCircleIcon } from '@heroicons/vue/20/solid'
             <p v-if="doctor.id_doctor === myBook.id_doctor" class="text-sm text-gray-500">Dott. {{ doctor.doth_surname }} {{ doctor.doth_name}}</p>
           </div>
           <p class="truncate text-sm text-gray-500">Prenotato il: {{ myBook.data_prenotazione.split('T')[0].split('-').reverse().join('/') }} alle {{ myBook.ora_prenotazione}}</p>
-          <button @click="deleteBooking(myBook.id)" :value="myBook.id" type="submit" class="absolute right-5 z-10 mt-5 w-30 origin-top-right rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Cancella</button>
+          <button @click="deleteBooking(myBook.id)" :value="myBook.id" type="submit" class="absolute right-5 z-10 mt-5 w-30 origin-top-right rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Cancella</button>
         </a>
       </div>
     </div>

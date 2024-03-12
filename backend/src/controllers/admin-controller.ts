@@ -33,7 +33,6 @@ export const createPrestazione = async (req: Request, res: Response) => {
     }
 }
 
-//TODO testare questa funzione
 export const updatePrestazione = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
     const user = decodeAccessToken(req, res)
@@ -46,7 +45,7 @@ export const updatePrestazione = async (req: Request, res: Response) => {
     await conn.execute("UPDATE prestazione SET costo=? WHERE prestazione.id = ?",
         [
             req.body.costo,
-            req.body.id,
+            req.params.id,
         ])
     res.json({ success: true,  message: "Aggiornamento effettuato con successo"})
 }
@@ -104,7 +103,6 @@ export const createDoctors = async (req: Request, res: Response) => {
     }
 }
 
-//TODO verificare questa funzione
 export const updateDoctors = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
     const user = decodeAccessToken(req, res)
@@ -112,14 +110,22 @@ export const updateDoctors = async (req: Request, res: Response) => {
         res.status(403).send("Questa operazione richiede l'autenticazione.")
         return
     }
+    if(req.params.id === undefined){
+        console.error("Il parametro passato è indefinito", req.params)
+    }
+
+    const idDoc = parseInt(req.params.id)
+    const prestazione1 = parseInt(req.body.nuovaPrestazione1)
+    const prestazione2 = parseInt(req.body.nuovaPrestazione2)
+    const prestazione3 = parseInt(req.body.nuovaPrestazione3)
 
     const conn = await getConnection()
-    await conn.execute("UPDATE doctors SET prestazione1=?, prestazione2=?, prestazione3=? WHERE doctors.id_doctor=?",
+    await conn.execute("UPDATE doctors SET prestazione1=?, prestazione2=?, prestazione3=? WHERE doctors.id=?",
         [
-            req.body.prestazione1,
-            req.body.prestazione2,
-            req.body.prestazione3,
-            req.body.id_doctor,
+            prestazione1,
+            prestazione2,
+            prestazione3,
+            idDoc,
         ])
     res.json({ success: true,  message: "Aggiornamento effettuato con successo"})
 }

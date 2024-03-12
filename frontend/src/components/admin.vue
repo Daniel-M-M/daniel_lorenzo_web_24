@@ -7,7 +7,6 @@
   <div class="grid grid-cols-1 gap-2 sm:grid-cols-1 mt-2">
     <div v-for="service in services" class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
       <PrestazioneItem :service="service" :user="user"></PrestazioneItem>
-      <button @click="" type="submit" class="flex right-5 z-10 m-5 w-30 rounded-full bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">update</button>
     </div>
   </div>
   <h1 class="text-2xl font-bold tracking-tight text-gray-900 mt-6">I nostri Dottori:</h1>
@@ -17,7 +16,6 @@
   <div class="grid grid-cols-1 gap-2 sm:grid-cols-1 mt-2">
     <div v-for="doctor in doctors" class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
       <DottoreItem :doctor="doctor" :user="user"></DottoreItem>
-      <button @click="" type="submit" class="flex right-5 z-10 m-5 w-30 rounded-full bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">update</button>
     </div>
   </div>
   <h1 class="text-2xl font-bold tracking-tight text-gray-900 mt-6">Le prenotazione:</h1>
