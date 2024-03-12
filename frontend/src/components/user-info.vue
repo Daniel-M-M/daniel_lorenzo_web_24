@@ -17,7 +17,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <p class="text-sm">Benvenuto  {{ user?.user_surname }}</p>
+  <div v-if="user?.role === 'admin'">
+    <p class="text-sm">Benvenuto  {{ user?.user_surname }}</p>
+  </div>
+  <div v-else>
+    <p class="text-sm">Benvenuto  {{ user?.user_surname }}</p>
+  </div>
   <div
     class="h-9 w-9 flex rounded-full"
     :class="{ 'bg-blue-500': user?.role !== 'admin', 'bg-rose-500': user?.role === 'admin' }"

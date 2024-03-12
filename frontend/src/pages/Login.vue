@@ -1,4 +1,30 @@
 <template>
+  <div v-if="this.correctStatus === 1">
+    <div class="rounded-md bg-green-50 p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <CheckCircleIcon class="h-5 w-5 text-green-400" aria-hidden="true" />
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-green-800">{{ message }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div v-else >
+    <div v-if="this.errorStatus === 1">
+      <div class="rounded-md bg-red-50 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-red-800">{{ message }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="prose">
     <h1>Login</h1>
     <form class="not-prose flex flex-col gap-3" @submit.prevent="onSubmit">
@@ -28,16 +54,30 @@
       return {
         id_user: "",
         password: "",
+        errorStatus: 0,
+        correctStatus: 0,
+        message: "",
       }
     },
     methods: {
       async onSubmit() {
         try {
-          await axios.post("/api/auth/login", {
+          const resp = await axios.post("/api/auth/login", {
             id_user: this.id_user,
             password: this.password,
           })
-          window.location.href = "/"
+
+          this.message = resp.data.message;
+          if (resp.data.success){
+            this.correctStatus = 1
+          } else {
+            this.errorStatus = 1
+          }
+
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 2000);
+
         } catch (e: any) {
           if (e.response) {
             alert(`${e.response.status} - ${e.response.statusText}\n${e.response.data}`)
@@ -50,4 +90,8 @@
       },
     },
   })
+</script>
+
+<script lang="ts" setup>
+  import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid'
 </script>

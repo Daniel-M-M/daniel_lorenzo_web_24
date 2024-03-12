@@ -124,7 +124,6 @@ export const updateDoctors = async (req: Request, res: Response) => {
     res.json({ success: true,  message: "Aggiornamento effettuato con successo"})
 }
 
-//TODO questa funzione da errore non lo so dove, mettere piu try/catch
 export const cancellaDottore = async (req: Request, res: Response) => {
     // Verifica che l'utente abbia effettuato il login
     //const user = decodeAccessToken(req, res)
@@ -136,25 +135,18 @@ export const cancellaDottore = async (req: Request, res: Response) => {
 
     const conn = await getConnection()
 
-    const [booking] = await conn.execute("SELECT * FROM doctors WHERE id=?", [req.params.id])
-    if (!Array.isArray(booking) || booking.length == 0) {
-        console.error("Book non trovato", req.params)
-        res.status(404).send("Book non trovato.")
-        return
-    }
-
     try {
         const result = await conn.execute("DELETE FROM doctors WHERE doctors.id=?", [req.params.id]);
         if (result.length > 0) {
             res.json({ success: true,  message: "Il dottore è stato cancellato con successo"});
         } else {
-            res.status(404).json({ success: false, message: "Nessun dottore trovato con quell'ID"});
+            res.json({ success: false, message: "Nessun dottore trovato con quell'ID"});
             console.error("error nel else del result.length", req.params)
         }
         console.log("Successo nella cancellazione del dottore");
     } catch (e) {
         console.error("Errore nella cancellazione del dottore:", e);
-        res.status(500).json({ success: false, message: "Errore durante la cancellazione del dottore"});
+        res.json({ success: false, message: "Errore durante la cancellazione del dottore"});
     }
 }
 
