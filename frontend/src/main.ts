@@ -45,9 +45,9 @@ router.beforeEach(async (to) => {
     return { path: "/" }
   }
 
-  if (to.meta.requiredLogin && user?.role === "admin") {
+  /*if (to.meta.requiredLogin && user?.role === "admin") {
     return { path:"/admin" }//creato io...
-  }
+  }*/
 })
 
 createApp(App).use(router).mount("#app")

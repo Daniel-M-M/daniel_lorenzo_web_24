@@ -24,3 +24,4 @@ app.use((_, res) => {
 });
 const port = 3000;
 app.listen(port, () => console.log(`Listening on http://localhost:${port}`));
+//# sourceMappingURL=main.js.map

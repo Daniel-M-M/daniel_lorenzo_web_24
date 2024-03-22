@@ -6,7 +6,7 @@ import { getConnection } from "../utils/db"
 export const register = async (req: Request, res: Response) => {
     const user = decodeAccessToken(req, res)
     if (user) {
-        res.status(403).send("Questa operazione richiede il logout.")
+        res.json({success: false, message: "Questa operazione richiede il logout."})
         return
     }
 
@@ -18,7 +18,7 @@ export const register = async (req: Request, res: Response) => {
     ])
 
     if (Array.isArray(users) && users.length > 0) {
-        res.status(400).send("Username già in uso.")
+        res.json({success: false, message: "Username già in uso."})
         return
     }
 
@@ -40,21 +40,14 @@ export const register = async (req: Request, res: Response) => {
 
     setAccessToken(req, res, newUser)
 
-    res.json({ message: "Registrazione effettuata con successo" })
+    res.json({success: true, message: "Registrazione effettuata con successo" })
 }
 
 export const login = async (req: Request, res: Response) => {
-    if (req.body.id_user.isEmpty() || req.body.password.isEmpty()) {
-        return res.status(400).send("Codice Fiscale o Password is missing")
-    }
-
-    if (req.body.id_user.isValid() || req.body.password.is.isValid()) {
-        return res.status(400).send("Codice Fiscale o Password not valid")
-    }
 
     const user = decodeAccessToken(req, res)
     if (user) {
-        res.status(403).send("Questa operazione richiede il logout.")
+        res.json({success: false, message: "Questa operazione richiede il logout."})
         return
     }
 
@@ -62,12 +55,12 @@ export const login = async (req: Request, res: Response) => {
 
     const connection = await getConnection()
     const [results] = await connection.execute(
-        "SELECT id_user, password, role FROM users WHERE id_user=?",
+        "SELECT id_user, user_surname, password, role FROM users WHERE id_user=?",
         [id_user]
     )
 
     if (!Array.isArray(results) || results.length == 0) {
-        res.status(400).send("Credenziali User errate.")
+        res.json({success: false, message: "Credenziali User errate."})
         return
     }
 
@@ -76,7 +69,7 @@ export const login = async (req: Request, res: Response) => {
     const passwordOk = await bcrypt.compare(password, userData.password)
 
     if (!passwordOk) {
-        res.status(400).send("Credenziali Pass errate.")
+        res.json({success: false, message: "Credenziali User errate."})
         return
     }
 
@@ -84,19 +77,19 @@ export const login = async (req: Request, res: Response) => {
 
     setAccessToken(req, res, userData)
 
-    res.json({ message: "Login effettuato con successo" })
+    res.json({success: true, message: "Login effettuato con successo" })
 }
 
 export const logout = async (req: Request, res: Response) => {
 
     const user = decodeAccessToken(req, res)
     if (!user) {
-        res.status(403).send("Questa operazione richiede l'autenticazione.")
+        res.json({success: false, message: "Questa operazione richiede l'autenticazione."})
         return
     }
 
     deleteAccessToken(req, res)
-    res.json({ message: "Logout effettuato con successo" })
+    res.json({success: true,  message: "Logout effettuato con successo" })
 }
 
 export const getProfile = async (req: Request, res: Response) => {
